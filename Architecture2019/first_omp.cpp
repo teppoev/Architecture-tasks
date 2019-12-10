@@ -1,29 +1,38 @@
 #include <omp.h>
-#include <iostream>
-
-using namespace std;
-omp_lock_t lock;
+#include <stdio.h>
 
 int main()
 {
-	printf("\n");
-	int n, i;
-	double sum, a[1000], b[1000];
-	for (i = 0; i < 1000; ++i) {
-		a[1] = i + 0.4 * i; b[i] = 0.87 * i;
-	}
-	omp_init_lock(&lock);
-#pragma omp parallel private(n, i) num_threads(3)
-	{
-		n = omp_get_thread_num();
-		while (!omp_test_lock(&lock)) {
-			printf("Section is closed, thread - %i \n", n);
+	int _max, _min;
+	int n = 10000, m = 20000;
+	int** matrix;
+	double time;
+	for (int k = 1; k < 100; ++k) {
+		time = omp_get_wtime();
+		_max = 0;
+		matrix = new int* [n]; \
+			for (int i = 0; i < n; ++i) {
+				matrix[i] = new int[m];
+				for (int j = 0; j < m; ++j) {
+					matrix[i][j] = n + 1;
+					if (j == m / 2) matrix[i][j] = (i + 2) % n;
+				}
+			}
+#pragma omp parallel for private(_min)
+		for (int i = 0; i < n; ++i)
+		{
+			_min = _CRT_INT_MAX;
+			for (int j = 0; j < m; ++j)
+			{
+				_min = matrix[i][j] < _min ? matrix[i][j] : _min;
+			}
+#pragma omp critical
+			_max = _min > _max ? _min : _max;
 		}
-		printf("Beginning of close section, thread - %i \n", n);
-		for (i = 0; i < 1000; ++i)
-			sum = sum + a[i] * b[i];
-		printf("Ending of close section, thread - %i \n", n);
-		omp_unset_lock(&lock);
+		for (int i = 0; i < n; ++i) delete matrix[i];
+		delete[] matrix;
+
+		time = omp_get_wtime() - time;
+		printf("maxmin is %i, time is %f ticks;\n", _max, time);
 	}
-	omp_destroy_lock;
 }
