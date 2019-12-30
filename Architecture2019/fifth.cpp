@@ -1,4 +1,4 @@
-#include <omp.h>
+/*#include <omp.h>
 #include <stdio.h>
 #include <fstream>
 
@@ -39,9 +39,6 @@ int main()
 			++index;
 		} while (!file.eof());
 		int length = index;
-		/*for (int i = 0; i < length; ++i) {
-			printf("%i-th row is %s\r\n", i + 1, rows[i]);
-		}*/
 		int _min_i = size, _min_j = size;
 
 		time = omp_get_wtime();
@@ -92,4 +89,4 @@ int main()
 		delete[] rows;
 	}
 	return 0;
-}
+}*/

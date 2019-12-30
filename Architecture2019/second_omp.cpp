@@ -4,32 +4,32 @@
 int main()
 {
 	int n = 1000, m = 2000, l = 1500;
-	int **matrix1, **matrix2, **matrixprod; //[n x m], [m x l], [n x l]
+	double **matrix1, **matrix2, **matrixprod; //[n x m], [m x l], [n x l]
 	double time;
 	for (int k = 1; k < 100; ++k) {
-		matrix1 = new int* [n];
-		matrix2 = new int* [m];
-		matrixprod = new int* [l];
+		matrix1 = new double* [n];
+		matrix2 = new double* [m];
+		matrixprod = new double* [l];
 		for (int i = 0; i < n; ++i) {
-			matrix1[i] = new int[m];
-			matrixprod[i] = new int[l];
+			matrix1[i] = new double[m];
+			matrixprod[i] = new double[l];
 			for (int j = 0; j < m; ++j) {
 				matrix1[i][j] = 1;
 			}
 		}
 		for (int i = 0; i < m; ++i) {
-			matrix2[i] = new int[l];
+			matrix2[i] = new double[l];
 			for (int j = 0; j < l; ++j) {
 				matrix2[i][j] = 1;
 			}
 		}
 		time = omp_get_wtime();
-#pragma omp parallel for
+#pragma omp parallel for schedule(static) shared(matrixprod)
 		for (int i = 0; i < n; ++i)
 		{
 			for (int j = 0; j < l; ++j)
 			{
-				int sum = 0;
+				double sum = 0.0;
 				for (int k = 0; k < m; ++k) {
 					sum += matrix1[i][k] * matrix2[k][j];
 				}
@@ -38,9 +38,6 @@ int main()
 		}
 		time = omp_get_wtime() - time;
 		for (int i = 0; i < n; ++i) {
-			for (int j = 0; j < l; ++j) {
-				if (matrixprod[i][j] != m) printf("something wrong with %i, %i", i, j);
-			}
 			delete matrix1[i];
 			delete matrixprod[i];
 		}
