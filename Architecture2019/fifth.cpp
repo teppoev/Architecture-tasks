@@ -46,7 +46,7 @@ int main()
 
 		time = omp_get_wtime();
 
-#pragma omp parallel
+#pragma omp parallel for schedule(static)
 		for (int i = 0; i < length; ++i)
 		{
 			char ch1, ch2;
