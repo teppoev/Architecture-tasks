@@ -6,10 +6,10 @@ int main()
 	int n = 1000, m = 2000, l = 1500;
 	double **matrix1, **matrix2, **matrixprod; //[n x m], [m x l], [n x l]
 	double time;
-	for (int k = 1; k < 100; ++k) {
+	for (int k = 1; k < 10; ++k) {
 		matrix1 = new double* [n];
 		matrix2 = new double* [m];
-		matrixprod = new double* [l];
+		matrixprod = new double* [n];
 		for (int i = 0; i < n; ++i) {
 			matrix1[i] = new double[m];
 			matrixprod[i] = new double[l];
@@ -47,5 +47,4 @@ int main()
 		delete[] matrix1, matrix2, matrixprod;
 		printf("time is %f seconds;\n", time);
 	}
-}
-*/
+}*/

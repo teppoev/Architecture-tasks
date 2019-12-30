@@ -1,6 +1,6 @@
-#include <omp.h>
+/*#include <omp.h>
 #include <stdio.h>
-#include <fstream>
+#include <cmath>
 
 void byRows(double** A, double* V, int n, int m, double* result) {
 #pragma omp parallel for schedule(static) shared(result)
@@ -135,3 +135,4 @@ int main()
 		printf("time is %f seconds;\n", time);
 	}
 }
+*/
